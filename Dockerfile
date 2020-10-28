@@ -35,10 +35,16 @@ RUN set -eux \
 
 # 克隆源码运行安装
 RUN set -eux \
-    && git clone --progress https://github.com/CareyWang/sub-web.git \
-	&& cd sub-web \
-	&& yarn install \
-	&& yarn build
+    && git clone --progress https://github.com/CareyWang/sub-web.git
+
+# 工作目录
+WORKDIR /app
+
+RUN set -eux \
+    && cp /root/sub-web/package.json /app \
+    && yarn install \
+    && cp /root/sub-web/* /app \
+    && yarn build
 
 # ##############################################################################
 
@@ -48,6 +54,6 @@ RUN set -eux \
 ##########################################
 # 
 # 指定创建的基础镜像
-FROM danxiaonuo/nginx:latest
+FROM alpine:latest
 
-COPY --from=build /sub-web/dist /www
+COPY --from=build /app/dist /www
