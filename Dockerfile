@@ -51,8 +51,9 @@ RUN set -eux \
 ##########################################
 FROM dependencies AS build
 WORKDIR /app
-cp -rf /sub-web/* . /app
-RUN yarn build
+RUN set -eux \
+    && cp -rf /sub-web/* . /app \
+    && yarn build
 
 # ##############################################################################
 
