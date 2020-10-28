@@ -1,8 +1,8 @@
 ##########################################
-#         安装依赖包                      #
+#            构建运行环境                 #
 ##########################################
 # 指定构建的基础镜像
-FROM node:lts-alpine AS dependencies
+FROM node:lts-alpine AS builder
 
 # 作者描述信息
 MAINTAINER danxiaonuo
