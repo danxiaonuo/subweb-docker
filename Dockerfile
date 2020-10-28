@@ -32,11 +32,11 @@ RUN set -eux \
    # 更新时间
    && echo ${TZ} > /etc/timezone
 
-# 运行工作目录
-WORKDIR /sub-web
+
 # 克隆源码运行安装
 RUN set -eux \
     && git clone --progress https://github.com/CareyWang/sub-web.git \
+	&& cd sub-web
 	&& yarn install \
 	&& yarn build
 
