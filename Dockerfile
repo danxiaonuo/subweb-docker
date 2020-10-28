@@ -8,12 +8,8 @@ ARG BUILD_DEPS="\
       git"
 ENV BUILD_DEPS=$BUILD_DEPS
 
-# 修改源地址
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 # ***** 安装依赖 *****
 RUN set -eux \
-   # 更新源地址
-   && apk update \
    # 安装依赖包
    && apk add -U --update $BUILD_DEPS
 
