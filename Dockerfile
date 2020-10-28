@@ -1,8 +1,8 @@
 ##########################################
-#            构建运行环境                 #
+#            安装依赖包                   #
 ##########################################
 # 指定构建的基础镜像
-FROM node:lts-alpine AS builder
+FROM node:lts-alpine AS dependencies
 
 # 作者描述信息
 MAINTAINER danxiaonuo
@@ -42,9 +42,17 @@ WORKDIR /app
 
 RUN set -eux \
     && cp /sub-web/package.json /app \
-    && yarn install \
-    && cp /sub-web/* /app \
-    && yarn build
+    && yarn install
+
+# ##############################################################################
+    
+##########################################
+#            构建运行环境                 #
+##########################################
+FROM dependencies AS build
+WORKDIR /app
+cp -rf /sub-web/* . /app
+RUN yarn build
 
 # ##############################################################################
 
