@@ -35,15 +35,15 @@ RUN set -eux \
 
 # 克隆源码运行安装
 RUN set -eux \
-    && git clone --progress https://github.com/CareyWang/sub-web.git /tmp
+    && git clone --progress https://github.com/CareyWang/sub-web.git /sub-web
 
 # 工作目录
 WORKDIR /app
 
 RUN set -eux \
-    && cp /tmp/sub-web/package.json /app \
+    && cp /sub-web/package.json /app \
     && yarn install \
-    && cp /tmp/sub-web/* /app \
+    && cp /sub-web/* /app \
     && yarn build
 
 # ##############################################################################
