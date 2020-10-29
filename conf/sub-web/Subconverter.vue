@@ -256,7 +256,7 @@ export default {
         },
         backendOptions: [{ value: "https://sub.danxiaonuo.workers.dev/sub?" }],
         remoteConfig: [
-		  {
+		{
             label: "ACL4SSR",
             options: [
               {
