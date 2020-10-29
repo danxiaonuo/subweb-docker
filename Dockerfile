@@ -93,16 +93,12 @@ LABEL maintainer="danxiaonuo <danxiaonuo@danxiaonuo.me>" \
 	  versions.dumb-init=${DUMBINIT_VERSION}
 
 
-# 安装dumb-init
-RUN set -eux \
-    && wget --no-check-certificate https://github.com/Yelp/dumb-init/releases/download/v${DUMBINIT_VERSION}/dumb-init_${DUMBINIT_VERSION}_x86_64 -O /usr/bin/dumb-init \
-    && chmod +x /usr/bin/dumb-init
-
 # 工作目录
 WORKDIR /www
 
 # 拷贝资源文件
 COPY --from=build /app/dist /www
+COPY conf/sub-web/vhost/default.conf /data/nginx/conf/vhost/default.conf
 
 # 容器信号处理
 STOPSIGNAL SIGQUIT
