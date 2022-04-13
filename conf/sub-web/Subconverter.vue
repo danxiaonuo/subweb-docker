@@ -10,7 +10,7 @@
             <div style="display: inline-block; position:absolute; right: 20px">{{ backendVersion }}</div>
           </div>
           <el-container>
-            <el-form :model="form" label-width="120px" label-position="left" style="width: 100%">
+            <el-form :model="form" label-width="80px" label-position="left" style="width: 100%">
               <el-form-item label="模式设置:">
                 <el-radio v-model="advanced" label="1">基础模式</el-radio>
                 <el-radio v-model="advanced" label="2">进阶模式</el-radio>
@@ -20,7 +20,7 @@
                   v-model="form.sourceSubUrl"
                   type="textarea"
                   rows="3"
-                  placeholder="支持订阅或ss/ssr/vmess单链接。多个链接请每行一个或用 | 分隔"
+                  placeholder="支持订阅或ss/ssr/vmess链接，多个链接每行一个或用 | 分隔"
                   @blur="saveSubUrl"
                 />
               </el-form-item>
@@ -64,10 +64,10 @@
                     <el-button slot="append" @click="gotoRemoteConfig" icon="el-icon-link">配置示例</el-button>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="IncludeRemarks:">
+                <el-form-item label="Include:">
                   <el-input v-model="form.includeRemarks" placeholder="节点名包含的关键字，支持正则" />
                 </el-form-item>
-                <el-form-item label="ExcludeRemarks:">
+                <el-form-item label="Exclude:">
                   <el-input v-model="form.excludeRemarks" placeholder="节点名不包含的关键字，支持正则" />
                 </el-form-item>
                 <el-form-item label="FileName:">
@@ -86,7 +86,7 @@
                         <el-checkbox v-model="form.new_name" label="Clash New Field"></el-checkbox>
                       </el-row>
                       <el-row>
-                        <el-checkbox v-model="form.udp" label="启用 UDP"></el-checkbox>
+                        <el-checkbox v-model="form.udp" @change="needUdp = true" label="启用 UDP"></el-checkbox>
                       </el-row>
                       <el-row>
                         <el-checkbox v-model="form.appendType" label="节点类型"></el-checkbox>
@@ -132,7 +132,7 @@
                   >复制</el-button>
                 </el-input>
               </el-form-item>
-              <el-form-item label="订阅短链接:">
+              <el-form-item label="订阅短链:">
                 <el-input class="copy-content" disabled v-model="curtomShortSubUrl">
                   <el-button
                     slot="append"
@@ -241,22 +241,38 @@ export default {
       options: {
         clientTypes: {
           Clash: "clash",
-          ClashR: "clashr",
-          Surge2: "surge&ver=2",
           Surge3: "surge&ver=3",
           Surge4: "surge&ver=4",
           Quantumult: "quan",
           QuantumultX: "quanx",
           Surfboard: "surfboard",
           Loon: "loon",
+          SSAndroid: "sssub",
+          V2Ray: "v2ray",
           ss: "ss",
           ssr: "ssr",
           ssd: "ssd",
-          v2ray: "v2ray"
+          ClashR: "clashr",
+          Surge2: "surge&ver=2",
         },
         backendOptions: [{ value: "https://sub.danxiaonuo.workers.dev/sub?" }],
         remoteConfig: [
-		{
+          {
+            label: "xiaonuo",
+            options: [
+              {
+                label: "xiaonuo_Full 小喏分组版",
+                value:
+                  "https://cdn.danxiaonuo.me/clash/config/xiaonuo_Full.ini"
+              },
+              {
+                label: "xiaonuo_Full_nostate 小喏无分组版",
+                value:
+                  "https://cdn.danxiaonuo.me/clash/config/xiaonuo_Full_nostate.ini"
+              }
+            ]
+          },
+          {
             label: "ACL4SSR",
             options: [
               {
@@ -372,12 +388,12 @@ export default {
               {
                 label: "No-Urltest",
                 value:
-                  "https://subconverter.oss-ap-southeast-1.aliyuncs.com/Rules/RemoteConfig/universal/no-urltest.ini"
+                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/universal/no-urltest.ini"
               },
               {
                 label: "Urltest",
                 value:
-                  "https://subconverter.oss-ap-southeast-1.aliyuncs.com/Rules/RemoteConfig/universal/urltest.ini"
+                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/universal/urltest.ini"
               }
             ]
           },
@@ -387,47 +403,42 @@ export default {
               {
                 label: "Maying",
                 value:
-                  "https://subconverter.oss-ap-southeast-1.aliyuncs.com/Rules/RemoteConfig/customized/maying.ini"
-              },
-              {
-                label: "rixCloud",
-                value:
-                  "https://subconverter.oss-ap-southeast-1.aliyuncs.com/Rules/RemoteConfig/customized/rixcloud.ini"
-              },
-              {
-                label: "YoYu",
-                value:
-                  "https://subconverter.oss-ap-southeast-1.aliyuncs.com/Rules/RemoteConfig/customized/yoyu.ini"
+                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/maying.ini"
               },
               {
                 label: "Ytoo",
                 value:
-                  "https://subconverter.oss-ap-southeast-1.aliyuncs.com/Rules/RemoteConfig/customized/ytoo.ini"
+                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/ytoo.ini"
+              },
+              {
+                label: "FlowerCloud",
+                value:
+                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/flowercloud.ini"
               },
               {
                 label: "NyanCAT",
                 value:
-                  "https://subconverter.oss-ap-southeast-1.aliyuncs.com/Rules/RemoteConfig/customized/nyancat.ini"
+                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/nyancat.ini"
               },
               {
                 label: "Nexitally",
                 value:
-                  "https://subconverter.oss-ap-southeast-1.aliyuncs.com/Rules/RemoteConfig/customized/nexitally.ini"
+                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/nexitally.ini"
               },
               {
                 label: "SoCloud",
                 value:
-                  "https://subconverter.oss-ap-southeast-1.aliyuncs.com/Rules/RemoteConfig/customized/socloud.ini"
+                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/socloud.ini"
               },
               {
                 label: "ARK",
                 value:
-                  "https://subconverter.oss-ap-southeast-1.aliyuncs.com/Rules/RemoteConfig/customized/ark.ini"
+                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/ark.ini"
               },
               {
                 label: "ssrCloud",
                 value:
-                  "https://subconverter.oss-ap-southeast-1.aliyuncs.com/Rules/RemoteConfig/customized/ssrcloud.ini"
+                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/ssrcloud.ini"
               }
             ]
           },
@@ -437,12 +448,12 @@ export default {
               {
                 label: "NeteaseUnblock(仅规则，No-Urltest)",
                 value:
-                  "https://subconverter.oss-ap-southeast-1.aliyuncs.com/Rules/RemoteConfig/special/netease.ini"
+                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/special/netease.ini"
               },
               {
                 label: "Basic(仅GEOIP CN + Final)",
                 value:
-                  "https://subconverter.oss-ap-southeast-1.aliyuncs.com/Rules/RemoteConfig/special/basic.ini"
+                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/special/basic.ini"
               }
             ]
           }
@@ -482,12 +493,13 @@ export default {
       loading: false,
       customSubUrl: "",
       curtomShortSubUrl: "",
-
       dialogUploadConfigVisible: false,
       uploadConfig: "",
       uploadPassword: "",
       myBot: tgBotLink,
-      sampleConfig: remoteConfigSample
+      sampleConfig: remoteConfigSample,
+
+      needUdp: false, // 是否需要添加 udp 参数
     };
   },
   created() {
@@ -592,8 +604,6 @@ export default {
           this.form.emoji.toString() +
           "&list=" +
           this.form.nodeList.toString() +
-          "&udp=" +
-          this.form.udp.toString() +
           "&tfo=" +
           this.form.tfo.toString() +
           "&scv=" +
@@ -602,6 +612,10 @@ export default {
           this.form.fdn.toString() +
           "&sort=" +
           this.form.sort.toString();
+
+        if (this.needUdp) {
+          this.customSubUrl += "&udp=" + this.form.udp.toString()
+        }
 
         if (this.form.tpl.surge.doh === true) {
           this.customSubUrl += "&surge.doh=true";
