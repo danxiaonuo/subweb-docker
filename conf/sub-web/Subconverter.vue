@@ -255,7 +255,7 @@ export default {
           ClashR: "clashr",
           Surge2: "surge&ver=2",
         },
-        backendOptions: [{ value: "https://sub.danxiaonuo.workers.dev/sub?" }],
+        backendOptions: [{ value: "https://subapi.xiaonuo.live/sub?" }],
         remoteConfig: [
           {
             label: "xiaonuo",
